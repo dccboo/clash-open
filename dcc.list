@@ -1,4 +1,4 @@
-DOMAIN-KEYWORD,kugou,,🌐Direct
+DOMAIN-KEYWORD,kugou,DIRECT
 DOMAIN-SUFFIX,ib.xyz,🌑Proxy
 DOMAIN-KEYWORD,facebook,🇺🇲 美国节点
 DOMAIN-KEYWORD,instagram,🇺🇲 美国节点
@@ -7,11 +7,11 @@ DOMAIN-SUFFIX,googleadservices.com,🌑Proxy
 DOMAIN-KEYWORD,pexpay,🌑Proxy
 DOMAIN-KEYWORD,beefy,🇨🇳 台湾节点
 DOMAIN-KEYWORD,tarot,🇨🇳 台湾节点
-DOMAIN-KEYWORD,douban,🌐Direct
+DOMAIN-KEYWORD,douban,DIRECT
 DOMAIN-KEYWORD,pixel,🌑Proxy
 DOMAIN-KEYWORD,spotify,🌑Proxy
-DOMAIN-KEYWORD,gimy,🌐Direct
-DOMAIN-KEYWORD,pianku,🌐Direct
+DOMAIN-KEYWORD,gimy,DIRECT
+DOMAIN-KEYWORD,pianku,DIRECT
 DOMAIN-KEYWORD,monaconft,🌑Proxy
 DOMAIN-KEYWORD,elrond,🌑Proxy
 DOMAIN-KEYWORD,solanart,🌑Proxy
@@ -31,14 +31,14 @@ DOMAIN-KEYWORD,aldrin,🇨🇳 台湾节点
 DOMAIN-KEYWORD,bonfida,🇨🇳 台湾节点
 DOMAIN-KEYWORD,solpad,🇨🇳 台湾节点
 DOMAIN-KEYWORD,sunny,🇨🇳 台湾节点
-DOMAIN-SUFFIX,myetherwallet.com,🌐Direct
-DOMAIN-KEYWORD,harvest,🌐Direct
+DOMAIN-SUFFIX,myetherwallet.com,DIRECT
+DOMAIN-KEYWORD,harvest,DIRECT
 DOMAIN-KEYWORD,gate,🌑Proxy
 DOMAIN-KEYWORD,github,🌑Proxy
 DOMAIN-KEYWORD,spookyswap,🌑Proxy
 DOMAIN-SUFFIX,ipip.net,🌑Proxy
 DOMAIN-SUFFIX,medium.com,🌑Proxy
-DOMAIN-KEYWORD,bilibili,🌐Direct
-DOMAIN-KEYWORD,spotify,🌐Direct
-DOMAIN-SUFFIX,projectserum.com,🌐Direct
-DOMAIN-SUFFIX,handle.fi,🌐Direct
+DOMAIN-KEYWORD,bilibili,DIRECT
+DOMAIN-KEYWORD,spotify,DIRECT
+DOMAIN-SUFFIX,projectserum.com,DIRECT
+DOMAIN-SUFFIX,handle.fi,DIRECT
