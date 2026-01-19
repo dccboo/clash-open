@@ -13,7 +13,7 @@ unified-delay: true
 proxy-providers:
   airport:
     type: http
-    url: "https://resourcemap.lol/sub?token=y2mJPqwMrbjY4rNe-22p1uF15APPYp1lYN3i0jm2xlg&type=clash&protocol=ss2022&use=domestic&rule=nodelist"
+    url: "机场订阅贴进来"
     interval: 3600
     path: ./providers/airport.yaml
     health-check:
@@ -451,3 +451,4 @@ rules:
 
   - RULE-SET,ProxyGFWlist,Proxy
   - MATCH,🐟 漏网之鱼
+
