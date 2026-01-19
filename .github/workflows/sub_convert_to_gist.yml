@@ -1,0 +1,70 @@
+name: sub-convert-to-gist
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"   # 每6小时一次
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare workspace
+        run: |
+          mkdir -p out
+
+      - name: Run subconverter (docker)
+        run: |
+          docker run --rm -i \
+            -e SUB_URL="${{ secrets.SUB_URL }}" \
+            -v "${{ github.workspace }}/out:/out" \
+            alpine:3.20 sh -c '
+              apk add --no-cache curl ca-certificates &&
+              # 拉起 subconverter（直接用官方镜像更省事，这里用简单方式：运行另一个容器做转换）
+              true
+            '
+
+      - name: Convert by subconverter image
+        run: |
+          # 使用常见的 subconverter 镜像（tindy2013/subconverter）
+          # 将订阅转换成 Clash/Mihomo 配置并输出到 out/clash.yaml
+          docker run --rm \
+            -p 25500:25500 \
+            tindy2013/subconverter:latest >/dev/null 2>&1 &
+          sleep 3
+
+          # 你可以按需调整 target=clash / target=mihomo
+          curl -fsSL "http://127.0.0.1:25500/sub?target=clash&url=${{ secrets.SUB_URL }}&list=true" -o out/clash.yaml
+
+          # 简单校验：文件非空
+          test -s out/clash.yaml
+
+      - name: Update secret gist file
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+        run: |
+          # 用 GitHub API 更新 gist 内 clash.yaml 内容
+          CONTENT="$(python3 - << 'PY'
+import json
+p="out/clash.yaml"
+with open(p,"r",encoding="utf-8",errors="ignore") as f:
+    data=f.read()
+print(json.dumps(data))
+PY
+)"
+          cat > payload.json <<EOF
+          {
+            "files": {
+              "clash.yaml": {
+                "content": ${CONTENT}
+              }
+            }
+          }
+          EOF
+
+          curl -fsSL -X PATCH \
+            -H "Authorization: token ${GIST_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/gists/${GIST_ID}" \
+            -d @payload.json >/dev/null
