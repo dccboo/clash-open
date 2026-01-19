@@ -3,7 +3,10 @@ name: sub-convert-to-gist
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"   # 每6小时一次
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: read
 
 jobs:
   convert:
@@ -13,58 +16,70 @@ jobs:
         run: |
           mkdir -p out
 
-      - name: Run subconverter (docker)
+      - name: Pull subconverter image
         run: |
-          docker run --rm -i \
-            -e SUB_URL="${{ secrets.SUB_URL }}" \
-            -v "${{ github.workspace }}/out:/out" \
-            alpine:3.20 sh -c '
-              apk add --no-cache curl ca-certificates &&
-              # 拉起 subconverter（直接用官方镜像更省事，这里用简单方式：运行另一个容器做转换）
-              true
-            '
+          docker pull tindy2013/subconverter:latest
 
-      - name: Convert by subconverter image
+      - name: Start subconverter
         run: |
-          # 使用常见的 subconverter 镜像（tindy2013/subconverter）
-          # 将订阅转换成 Clash/Mihomo 配置并输出到 out/clash.yaml
-          docker run --rm \
-            -p 25500:25500 \
-            tindy2013/subconverter:latest >/dev/null 2>&1 &
-          sleep 3
+          docker rm -f subconverter >/dev/null 2>&1 || true
+          docker run -d --name subconverter -p 25500:25500 tindy2013/subconverter:latest
+          for i in $(seq 1 30); do
+            if curl -fsS "http://127.0.0.1:25500/version" >/dev/null 2>&1; then
+              echo "subconverter is up"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "subconverter failed to start"
+          docker logs subconverter || true
+          exit 1
 
-          # 你可以按需调整 target=clash / target=mihomo
-          curl -fsSL "http://127.0.0.1:25500/sub?target=clash&url=${{ secrets.SUB_URL }}&list=true" -o out/clash.yaml
+      - name: Convert subscription to Clash
+        env:
+          SUB_URL: ${{ secrets.SUB_URL }}
+        run: |
+          curl -fsS -G "http://127.0.0.1:25500/sub" \
+            --data-urlencode "target=clash" \
+            --data-urlencode "list=true" \
+            --data-urlencode "url=${SUB_URL}" \
+            -o out/clash.yaml
 
-          # 简单校验：文件非空
           test -s out/clash.yaml
+          grep -q "proxies:" out/clash.yaml || grep -q "proxy-providers:" out/clash.yaml
 
       - name: Update secret gist file
         env:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
           GIST_ID: ${{ secrets.GIST_ID }}
         run: |
-          # 用 GitHub API 更新 gist 内 clash.yaml 内容
-          CONTENT="$(python3 - << 'PY'
-import json
-p="out/clash.yaml"
-with open(p,"r",encoding="utf-8",errors="ignore") as f:
-    data=f.read()
-print(json.dumps(data))
-PY
-)"
-          cat > payload.json <<EOF
-          {
-            "files": {
-              "clash.yaml": {
-                "content": ${CONTENT}
-              }
-            }
-          }
-          EOF
+          python3 -c "
+import json, os, pathlib, urllib.request, sys
+p = pathlib.Path('out/clash.yaml')
+data = p.read_text(encoding='utf-8', errors='ignore')
+payload = {'files': {'clash.yaml': {'content': data}}}
+req = urllib.request.Request(
+  f'https://api.github.com/gists/{os.environ[\"GIST_ID\"]}',
+  data=json.dumps(payload).encode('utf-8'),
+  method='PATCH',
+  headers={
+    'Authorization': f'token {os.environ[\"GIST_TOKEN\"]}',
+    'Accept': 'application/vnd.github+json',
+    'User-Agent': 'sub-convert-workflow'
+  }
+)
+try:
+  with urllib.request.urlopen(req) as resp:
+    if resp.status not in (200, 201):
+      print('Unexpected status:', resp.status)
+      sys.exit(1)
+except Exception as e:
+  print('Failed to update gist:', e)
+  sys.exit(1)
+print('Gist updated successfully.')
+"
 
-          curl -fsSL -X PATCH \
-            -H "Authorization: token ${GIST_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/gists/${GIST_ID}" \
-            -d @payload.json >/dev/null
+      - name: Cleanup
+        if: always()
+        run: |
+          docker rm -f subconverter >/dev/null 2>&1 || true
