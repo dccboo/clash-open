@@ -55,6 +55,7 @@ jobs:
             --data-urlencode "target=clash" \
             --data-urlencode "url=${SUB_URL}" \
             --data-urlencode "config=profiles/AOFlast.ini" \
+            --data-urlencode "emoji=true" \
             -o out/clash.yaml
 
           # Sanity checks: must be non-empty and look like a full Clash config
