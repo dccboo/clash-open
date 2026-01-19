@@ -1,0 +1,453 @@
+port: 7890
+socks-port: 7891
+mixed-port: 7893
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: false
+
+external-controller: 127.0.0.1:9090
+unified-delay: true
+
+# ========== 机场订阅（关键：把 url 换成你的机场 Clash 订阅链接） ==========
+proxy-providers:
+  airport:
+    type: http
+    url: "https://resourcemap.lol/sub?token=y2mJPqwMrbjY4rNe-22p1uF15APPYp1lYN3i0jm2xlg&type=clash&protocol=ss2022&use=domestic&rule=nodelist"
+    interval: 3600
+    path: ./providers/airport.yaml
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 300
+
+# ========== 分组（按你的 custom_proxy_group 还原） ==========
+proxy-groups:
+  - name: Proxy
+    type: select
+    proxies:
+      - AutoTest
+      - 手动切换
+      - 香港节点
+      - 日本节点
+      - 台湾节点
+      - 新加坡节点
+      - 美国节点
+
+  - name: 手动切换
+    type: select
+    use:
+      - airport
+
+  - name: AutoTest
+    type: url-test
+    use:
+      - airport
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    filter: "(港|HK|亚洲|Hong Kong|台湾|台|新北|彰化|TW|Taiwan|Coventry|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|新加坡|新|坡|狮城|SG|Singapore|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|KR|Korea|KOR|首尔|韩|韓|Germany|英|UK|London|Britain|Coventry)"
+
+  - name: ChatGPT
+    type: select
+    proxies:
+      - 美国节点
+      - 新加坡节点
+      - 日本节点
+      - 台湾节点
+      - 香港节点
+
+  - name: Web3
+    type: select
+    proxies:
+      - 美国节点
+      - 新加坡节点
+      - 日本节点
+      - 台湾节点
+      - 香港节点
+
+  - name: 🐟 漏网之鱼
+    type: select
+    proxies:
+      - Proxy
+      - AutoTest
+      - 手动切换
+      - DIRECT
+      - 香港节点
+      - 日本节点
+      - 台湾节点
+      - 新加坡节点
+      - 美国节点
+
+  - name: 🌍 国外媒体
+    type: select
+    proxies:
+      - Proxy
+      - AutoTest
+      - 手动切换
+      - 香港节点
+      - 日本节点
+      - 台湾节点
+      - 新加坡节点
+      - 美国节点
+
+  - name: 📹 YouTube
+    type: select
+    proxies:
+      - Proxy
+      - AutoTest
+      - 手动切换
+      - 香港节点
+      - 日本节点
+      - 台湾节点
+      - 新加坡节点
+      - 美国节点
+
+  - name: 🍎 Apple
+    type: select
+    proxies:
+      - DIRECT
+      - Proxy
+      - AutoTest
+      - 手动切换
+      - 香港节点
+      - 新加坡节点
+      - 日本节点
+      - 美国节点
+      - 台湾节点
+
+  - name: Ⓜ️ OneDrive
+    type: select
+    proxies:
+      - DIRECT
+      - Proxy
+      - AutoTest
+      - 手动切换
+      - 香港节点
+      - 新加坡节点
+      - 日本节点
+      - 美国节点
+      - 台湾节点
+
+  - name: Ⓜ️ 微软服务
+    type: select
+    proxies:
+      - Proxy
+      - DIRECT
+      - AutoTest
+      - 手动切换
+      - 香港节点
+      - 新加坡节点
+      - 日本节点
+      - 美国节点
+      - 台湾节点
+
+  # ========== 节点分类（按你的 url-test 过滤规则） ==========
+  - name: 香港节点
+    type: url-test
+    use: [airport]
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    filter: "(港|HK|亚洲|Hong Kong)"
+
+  - name: 台湾节点
+    type: url-test
+    use: [airport]
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    filter: "(台湾|台|新北|彰化|TW|Taiwan)"
+
+  - name: 日本节点
+    type: url-test
+    use: [airport]
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    filter: "(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan)"
+
+  - name: 英国节点
+    type: url-test
+    use: [airport]
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    filter: "(英|UK|London|Britain|Coventry)"
+
+  - name: 美国节点
+    type: url-test
+    use: [airport]
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    filter: "(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)"
+
+  - name: 新加坡节点
+    type: url-test
+    use: [airport]
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    filter: "(新加坡|新|坡|狮城|SG|Singapore)"
+
+# ========== 远程规则（按你的 ruleset=... 还原） ==========
+rule-providers:
+  DIRECT_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/DIRECT.list"
+    path: ./ruleset/DIRECT.list
+    interval: 86400
+
+  Proxy_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/Proxy.list"
+    path: ./ruleset/Proxy.list
+    interval: 86400
+
+  HK_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/HK.list"
+    path: ./ruleset/HK.list
+    interval: 86400
+
+  TW_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/TW.list"
+    path: ./ruleset/TW.list
+    interval: 86400
+
+  US_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/US.list"
+    path: ./ruleset/US.list
+    interval: 86400
+
+  JP_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/JP.list"
+    path: ./ruleset/JP.list
+    interval: 86400
+
+  UK_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/UK.list"
+    path: ./ruleset/UK.list
+    interval: 86400
+
+  SG_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/SG.list"
+    path: ./ruleset/SG.list
+    interval: 86400
+
+  ChatGPT_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/ChatGPT.list"
+    path: ./ruleset/ChatGPT.list
+    interval: 86400
+
+  Web3_list:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/dccboo/clash-open/main/Web3.list"
+    path: ./ruleset/Web3.list
+    interval: 86400
+
+  BanAD:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list"
+    path: ./ruleset/BanAD.list
+    interval: 86400
+
+  BanProgramAD:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list"
+    path: ./ruleset/BanProgramAD.list
+    interval: 86400
+
+  LocalAreaNetwork:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list"
+    path: ./ruleset/LocalAreaNetwork.list
+    interval: 86400
+
+  UnBan:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list"
+    path: ./ruleset/UnBan.list
+    interval: 86400
+
+  GoogleCN:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/GoogleCN.list"
+    path: ./ruleset/GoogleCN.list
+    interval: 86400
+
+  SteamCN:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/SteamCN.list"
+    path: ./ruleset/SteamCN.list
+    interval: 86400
+
+  ChinaIp:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaIp.list"
+    path: ./ruleset/ChinaIp.list
+    interval: 86400
+
+  ChinaDomain:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
+    path: ./ruleset/ChinaDomain.list
+    interval: 86400
+
+  ChinaCompanyIp:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list"
+    path: ./ruleset/ChinaCompanyIp.list
+    interval: 86400
+
+  Download:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list"
+    path: ./ruleset/Download.list
+    interval: 86400
+
+  ChinaMedia:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaMedia.list"
+    path: ./ruleset/ChinaMedia.list
+    interval: 86400
+
+  NetEaseMusic:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/NetEaseMusic.list"
+    path: ./ruleset/NetEaseMusic.list
+    interval: 86400
+
+  BilibiliHMT:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/BilibiliHMT.list"
+    path: ./ruleset/BilibiliHMT.list
+    interval: 86400
+
+  Bilibili:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Bilibili.list"
+    path: ./ruleset/Bilibili.list
+    interval: 86400
+
+  YouTube:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/YouTube.list"
+    path: ./ruleset/YouTube.list
+    interval: 86400
+
+  Bahamut:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Bahamut.list"
+    path: ./ruleset/Bahamut.list
+    interval: 86400
+
+  ProxyMedia:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyMedia.list"
+    path: ./ruleset/ProxyMedia.list
+    interval: 86400
+
+  OneDrive:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/OneDrive.list"
+    path: ./ruleset/OneDrive.list
+    interval: 86400
+
+  Microsoft:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Microsoft.list"
+    path: ./ruleset/Microsoft.list
+    interval: 86400
+
+  Apple:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list"
+    path: ./ruleset/Apple.list
+    interval: 86400
+
+  ProxyGFWlist:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list"
+    path: ./ruleset/ProxyGFWlist.list
+    interval: 86400
+
+# ========== 规则（按 ini 顺序） ==========
+rules:
+  - RULE-SET,DIRECT_list,DIRECT
+  - RULE-SET,Proxy_list,Proxy
+  - RULE-SET,HK_list,香港节点
+  - RULE-SET,TW_list,台湾节点
+  - RULE-SET,US_list,美国节点
+  - RULE-SET,JP_list,日本节点
+  - RULE-SET,UK_list,英国节点
+  - RULE-SET,SG_list,新加坡节点
+  - RULE-SET,ChatGPT_list,ChatGPT
+  - RULE-SET,Web3_list,Web3
+
+  - RULE-SET,BanAD,REJECT
+  - RULE-SET,BanProgramAD,REJECT
+
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+
+  - RULE-SET,LocalAreaNetwork,DIRECT
+  - RULE-SET,UnBan,DIRECT
+  - RULE-SET,GoogleCN,DIRECT
+  - RULE-SET,SteamCN,DIRECT
+  - RULE-SET,ChinaIp,DIRECT
+  - RULE-SET,ChinaDomain,DIRECT
+  - RULE-SET,ChinaCompanyIp,DIRECT
+  - RULE-SET,Download,DIRECT
+  - RULE-SET,ChinaMedia,DIRECT
+  - RULE-SET,NetEaseMusic,DIRECT
+  - RULE-SET,BilibiliHMT,DIRECT
+  - RULE-SET,Bilibili,DIRECT
+
+  - RULE-SET,YouTube,📹 YouTube
+  - RULE-SET,Bahamut,🌍 国外媒体
+  - RULE-SET,ProxyMedia,🌍 国外媒体
+  - RULE-SET,OneDrive,Ⓜ️ OneDrive
+  - RULE-SET,Microsoft,Ⓜ️ 微软服务
+  - RULE-SET,Apple,🍎 Apple
+
+  - RULE-SET,ProxyGFWlist,Proxy
+  - MATCH,🐟 漏网之鱼
