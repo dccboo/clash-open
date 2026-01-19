@@ -11,22 +11,31 @@ permissions:
 jobs:
   convert:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Prepare workspace
         run: |
           mkdir -p out
+          test -f profiles/AOFlast.ini
 
       - name: Pull subconverter image
         run: |
           docker pull tindy2013/subconverter:latest
 
-      - name: Start subconverter
+      - name: Start subconverter (with profiles mounted)
         run: |
           docker rm -f subconverter >/dev/null 2>&1 || true
-          docker run -d --name subconverter -p 25500:25500 tindy2013/subconverter:latest
+          docker run -d --name subconverter \
+            -p 25500:25500 \
+            -v "${{ github.workspace }}/profiles:/base/profiles" \
+            tindy2013/subconverter:latest
 
+          # Wait for service to be ready
           for i in $(seq 1 30); do
-            if curl -fsS "http://127.0.0.1:25500/version" >/dev/null 2>&1; then
+            if curl -fsS "http://127.0.0.1:25500/" >/dev/null 2>&1; then
               echo "subconverter is up"
               exit 0
             fi
@@ -37,20 +46,22 @@ jobs:
           docker logs subconverter || true
           exit 1
 
-      - name: Convert subscription to Clash
+      - name: Convert subscription using AOFlast.ini (full config)
         env:
           SUB_URL: ${{ secrets.SUB_URL }}
         run: |
           curl -fsS -G "http://127.0.0.1:25500/sub" \
             --data-urlencode "target=clash" \
-            --data-urlencode "list=true" \
             --data-urlencode "url=${SUB_URL}" \
+            --data-urlencode "config=profiles/AOFlast.ini" \
             -o out/clash.yaml
 
+          # Sanity checks: must be non-empty and look like a full Clash config
           test -s out/clash.yaml
-          grep -q "proxies:" out/clash.yaml || grep -q "proxy-providers:" out/clash.yaml
+          grep -q "proxy-groups:" out/clash.yaml
+          grep -q "^rules:" out/clash.yaml || grep -q "\nrules:" out/clash.yaml
 
-      - name: Update secret gist file
+      - name: Update secret gist file (clash.yaml)
         env:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
           GIST_ID: ${{ secrets.GIST_ID }}
