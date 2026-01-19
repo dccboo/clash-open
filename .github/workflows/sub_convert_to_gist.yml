@@ -1,3 +1,4 @@
+
 name: sub-convert-to-gist
 
 on:
@@ -33,9 +34,9 @@ jobs:
             -v "${{ github.workspace }}/profiles:/base/profiles" \
             tindy2013/subconverter:latest
 
-          # Wait for service to be ready
+          # Wait for service to be ready (do NOT use -f; / may return 404)
           for i in $(seq 1 30); do
-            if curl -fsS "http://127.0.0.1:25500/" >/dev/null 2>&1; then
+            if curl -sS "http://127.0.0.1:25500/" >/dev/null 2>&1; then
               echo "subconverter is up"
               exit 0
             fi
