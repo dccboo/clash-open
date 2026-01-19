@@ -62,6 +62,44 @@ jobs:
           grep -q "proxy-groups:" out/clash.yaml
           grep -q "^rules:" out/clash.yaml || grep -q "\nrules:" out/clash.yaml
 
+      - name: Install PyYAML
+        run: |
+          python3 -m pip install --disable-pip-version-check -q pyyaml
+
+      - name: Inject group icons
+        run: |
+          python3 - <<'PY'
+          import yaml
+          from pathlib import Path
+
+          ICONS = {
+              "香港节点": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flags/hk.svg",
+              "日本节点": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flags/jp.svg",
+              "台湾节点": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flags/tw.svg",
+              "新加坡节点": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flags/sg.svg",
+              "美国节点": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flags/us.svg",
+          }
+
+          for fn in ["out/clash.yaml"]:
+              p = Path(fn)
+              if not p.exists():
+                  continue
+
+              data = yaml.safe_load(p.read_text(encoding="utf-8", errors="ignore"))
+              groups = data.get("proxy-groups", [])
+
+              for g in groups:
+                  if g.get("name") in ICONS:
+                      g["icon"] = ICONS[g["name"]]
+
+              p.write_text(
+                  yaml.safe_dump(data, allow_unicode=True, sort_keys=False),
+                  encoding="utf-8"
+              )
+
+              print(f"Injected icons into {fn}")
+          PY
+
       - name: Update secret gist file (clash.yaml)
         env:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
