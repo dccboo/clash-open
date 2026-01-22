@@ -58,6 +58,8 @@ jobs:
           set -e
 
           curl -sS -G "http://127.0.0.1:25500/sub" \
+            -H "User-Agent: Clash Verge" \
+            --http1.1 \
             --data-urlencode "target=clash" \
             --data-urlencode "url=${SUB_URL}" \
             --data-urlencode "config=profiles/AOFlast.ini" \
