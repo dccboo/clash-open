@@ -51,30 +51,12 @@ jobs:
         env:
           SUB_URL: ${{ secrets.SUB_URL }}
         run: |
-      - name: Convert subscription using AOFlast.ini (debug 400)
-        env:
-          SUB_URL: ${{ secrets.SUB_URL }}
-        run: |
-          set -e
-
-          curl -sS -G "http://127.0.0.1:25500/sub" \
-            -H "User-Agent: Clash Verge" \
-            --http1.1 \
+          curl -fsS -G "http://127.0.0.1:25500/sub" \
             --data-urlencode "target=clash" \
             --data-urlencode "url=${SUB_URL}" \
             --data-urlencode "config=profiles/AOFlast.ini" \
-            -o out/clash.yaml \
-            -w "\nHTTP=%{http_code}\n"
-
-          echo "==== response head (may be error message) ===="
-          head -n 160 out/clash.yaml
-
-          echo "==== subconverter logs tail ===="
-          docker logs subconverter | tail -n 200 || true
-
-          # 如果不是正常配置，直接失败退出（避免继续写入 Gist）
-          grep -q "proxy-groups:" out/clash.yaml
-          grep -q "^rules:" out/clash.yaml || grep -q "\nrules:" out/clash.yaml
+            --data-urlencode "emoji=true" \
+            -o out/clash.yaml
 
           # Sanity checks: must be non-empty and look like a full Clash config
           test -s out/clash.yaml
