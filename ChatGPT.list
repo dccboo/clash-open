@@ -3,24 +3,24 @@ DOMAIN-KEYWORD,chatgpt
 DOMAIN-KEYWORD,notebooklm
 
 # > Ai general rules
-DOMAIN-KEYWORD,statsig
-DOMAIN-KEYWORD,datadoghq
-DOMAIN-KEYWORD,cloudflareinsights
-DOMAIN-KEYWORD,algolia
+#DOMAIN-KEYWORD,statsig
+#DOMAIN-KEYWORD,datadoghq
+#DOMAIN-KEYWORD,cloudflareinsights
+#DOMAIN-KEYWORD,algolia
 #DOMAIN-KEYWORD,auth0
-DOMAIN-KEYWORD,cloudflare
-DOMAIN-KEYWORD,arkoselabs
-DOMAIN-KEYWORD,statsigapi
-DOMAIN-KEYWORD,featuregates
-DOMAIN-KEYWORD,identrust
-DOMAIN-KEYWORD,intercom
-DOMAIN-KEYWORD,intercomcdn
-DOMAIN-KEYWORD,launchdarkly
-DOMAIN-KEYWORD,segment
-DOMAIN-KEYWORD,amazonaws
+#DOMAIN-KEYWORD,cloudflare
+#DOMAIN-KEYWORD,arkoselabs
+#DOMAIN-KEYWORD,statsigapi
+#DOMAIN-KEYWORD,featuregates
+#DOMAIN-KEYWORD,identrust
+#DOMAIN-KEYWORD,intercom
+#DOMAIN-KEYWORD,intercomcdn
+#DOMAIN-KEYWORD,launchdarkly
+#DOMAIN-KEYWORD,segment
+#DOMAIN-KEYWORD,amazonaws
 #DOMAIN-KEYWORD,wp
-DOMAIN-KEYWORD,sentry
-DOMAIN-KEYWORD,stripe
+#DOMAIN-KEYWORD,sentry
+#DOMAIN-KEYWORD,stripe
 
 # > Anthropic/Claude
 DOMAIN-KEYWORD,usefathom
@@ -35,32 +35,22 @@ DOMAIN-KEYWORD,cursor
 DOMAIN-KEYWORD,dify
 
 # > Google AI (Gemini/Bard)
-DOMAIN-KEYWORD,ai
-DOMAIN-KEYWORD,makersuite
 DOMAIN-KEYWORD,gemini
-DOMAIN-KEYWORD,apis
-DOMAIN-KEYWORD,clients6
-DOMAIN-KEYWORD,clients4
+#DOMAIN-KEYWORD,clients6
+#DOMAIN-KEYWORD,clients4
 DOMAIN-KEYWORD,deepmind
 DOMAIN-KEYWORD,generativeai
 DOMAIN-KEYWORD,colab
 DOMAIN-KEYWORD,developerprofiles
-DOMAIN-KEYWORD,googleusercontent
-DOMAIN-KEYWORD,googleapis
-DOMAIN-KEYWORD,proactivebackend
+#DOMAIN-KEYWORD,googleusercontent
+#DOMAIN-KEYWORD,googleapis
+#DOMAIN-KEYWORD,proactivebackend
 
 # > JetBrains AI
 DOMAIN-KEYWORD,grazie
 
-# > Meta
-#DOMAIN-KEYWORD,meta
-
 # > Microsoft Copilot
-DOMAIN-KEYWORD,msn
 DOMAIN-KEYWORD,copilot
-DOMAIN-KEYWORD,bing
-DOMAIN-KEYWORD,appcenter
-#DOMAIN-KEYWORD,microsoft
 
 # > Midjourney
 DOMAIN-KEYWORD,midjourney
@@ -68,20 +58,17 @@ DOMAIN-KEYWORD,midjourney
 # > OpenAI/ChatGPT
 DOMAIN-KEYWORD,openai
 DOMAIN-KEYWORD,chatgpt
-DOMAIN-KEYWORD,livekit
-DOMAIN-KEYWORD,oaistatic
-DOMAIN-KEYWORD,oaiusercontent
-DOMAIN-KEYWORD,azureedge
-DOMAIN-KEYWORD,imgix
+#DOMAIN-KEYWORD,livekit
+#DOMAIN-KEYWORD,oaistatic
+#DOMAIN-KEYWORD,oaiusercontent
+#DOMAIN-KEYWORD,azureedge
+#DOMAIN-KEYWORD,imgix
 
 # > Perplexity
-DOMAIN-KEYWORD,pplx
-DOMAIN-KEYWORD,perplexity
+#DOMAIN-KEYWORD,pplx
+#DOMAIN-KEYWORD,perplexity
 
 # > Poe
 DOMAIN-KEYWORD,poe
 DOMAIN-KEYWORD,poecdn
 
-# > xAI/Grok
-#DOMAIN-KEYWORD,x
-#DOMAIN-KEYWORD,grok
