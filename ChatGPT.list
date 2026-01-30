@@ -3,28 +3,8 @@ DOMAIN-KEYWORD,chatgpt
 DOMAIN-KEYWORD,notebooklm
 
 # > Ai general rules
-#DOMAIN-KEYWORD,statsig
-#DOMAIN-KEYWORD,datadoghq
-#DOMAIN-KEYWORD,cloudflareinsights
-#DOMAIN-KEYWORD,algolia
-#DOMAIN-KEYWORD,auth0
-#DOMAIN-KEYWORD,cloudflare
-#DOMAIN-KEYWORD,arkoselabs
-#DOMAIN-KEYWORD,statsigapi
-#DOMAIN-KEYWORD,featuregates
-#DOMAIN-KEYWORD,identrust
-#DOMAIN-KEYWORD,intercom
-#DOMAIN-KEYWORD,intercomcdn
-#DOMAIN-KEYWORD,launchdarkly
-#DOMAIN-KEYWORD,segment
-#DOMAIN-KEYWORD,amazonaws
-#DOMAIN-KEYWORD,wp
-#DOMAIN-KEYWORD,sentry
-#DOMAIN-KEYWORD,stripe
 
 # > Anthropic/Claude
-DOMAIN-KEYWORD,usefathom
-DOMAIN-KEYWORD,anthropic
 DOMAIN-KEYWORD,claude
 DOMAIN-KEYWORD,claudeusercontent
 
