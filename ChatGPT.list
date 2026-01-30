@@ -36,15 +36,7 @@ DOMAIN-KEYWORD,dify
 
 # > Google AI (Gemini/Bard)
 DOMAIN-KEYWORD,gemini
-#DOMAIN-KEYWORD,clients6
-#DOMAIN-KEYWORD,clients4
 DOMAIN-KEYWORD,deepmind
-DOMAIN-KEYWORD,generativeai
-DOMAIN-KEYWORD,colab
-DOMAIN-KEYWORD,developerprofiles
-#DOMAIN-KEYWORD,googleusercontent
-#DOMAIN-KEYWORD,googleapis
-#DOMAIN-KEYWORD,proactivebackend
 
 # > JetBrains AI
 DOMAIN-KEYWORD,grazie
@@ -58,11 +50,6 @@ DOMAIN-KEYWORD,midjourney
 # > OpenAI/ChatGPT
 DOMAIN-KEYWORD,openai
 DOMAIN-KEYWORD,chatgpt
-#DOMAIN-KEYWORD,livekit
-#DOMAIN-KEYWORD,oaistatic
-#DOMAIN-KEYWORD,oaiusercontent
-#DOMAIN-KEYWORD,azureedge
-#DOMAIN-KEYWORD,imgix
 
 # > Perplexity
 #DOMAIN-KEYWORD,pplx
