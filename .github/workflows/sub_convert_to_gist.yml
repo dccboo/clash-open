@@ -1,4 +1,3 @@
-
 name: sub-convert-to-gist
 
 on:
@@ -34,7 +33,7 @@ jobs:
             -v "${{ github.workspace }}/profiles:/base/profiles" \
             tindy2013/subconverter:latest
 
-          # Wait for service to be ready (do NOT use -f; / may return 404)
+          # Wait for service to be ready
           for i in $(seq 1 30); do
             if curl -sS "http://127.0.0.1:25500/" >/dev/null 2>&1; then
               echo "subconverter is up"
@@ -47,10 +46,12 @@ jobs:
           docker logs subconverter || true
           exit 1
 
-      - name: Convert subscription using AOFlast.ini (full config)
+      - name: Convert subscriptions (Main & TAG)
         env:
           SUB_URL: ${{ secrets.SUB_URL }}
+          SUB_URL_TAG: ${{ secrets.SUB_URL_TAG }}
         run: |
+          # 1. 转换主机场Kuromis
           curl -fsS -G "http://127.0.0.1:25500/sub" \
             --data-urlencode "target=clash" \
             --data-urlencode "url=${SUB_URL}" \
@@ -58,10 +59,17 @@ jobs:
             --data-urlencode "emoji=true" \
             -o out/clash.yaml
 
-          # Sanity checks: must be non-empty and look like a full Clash config
-          test -s out/clash.yaml
-          grep -q "proxy-groups:" out/clash.yaml
-          grep -q "^rules:" out/clash.yaml || grep -q "\nrules:" out/clash.yaml
+          # 2. 转换 备用机场TAG 
+          curl -fsS -G "http://127.0.0.1:25500/sub" \
+            --data-urlencode "target=clash" \
+            --data-urlencode "url=${SUB_URL_TAG}" \
+            --data-urlencode "config=profiles/AOFlast.ini" \
+            --data-urlencode "emoji=true" \
+            -o out/clash_tag.yaml
+
+          # Sanity checks
+          test -s out/clash.yaml && grep -q "proxy-groups:" out/clash.yaml
+          test -s out/clash_tag.yaml && grep -q "proxy-groups:" out/clash_tag.yaml
 
       - name: Install PyYAML
         run: |
@@ -81,7 +89,8 @@ jobs:
               "美国节点": "https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/flags/us.svg",
           }
 
-          for fn in ["out/clash.yaml"]:
+          # 循环处理两个文件
+          for fn in ["out/clash.yaml", "out/clash_tag.yaml"]:
               p = Path(fn)
               if not p.exists():
                   continue
@@ -97,11 +106,10 @@ jobs:
                   yaml.safe_dump(data, allow_unicode=True, sort_keys=False),
                   encoding="utf-8"
               )
-
               print(f"Injected icons into {fn}")
           PY
 
-      - name: Update secret gist file (clash.yaml)
+      - name: Update secret gist files (clash.yaml & clash_tag.yaml)
         env:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
           GIST_ID: ${{ secrets.GIST_ID }}
@@ -109,16 +117,23 @@ jobs:
           python3 - <<'PY'
           import json, os, pathlib, sys, urllib.request
 
-          p = pathlib.Path("out/clash.yaml")
-          data = p.read_text(encoding="utf-8", errors="ignore")
+          # 定义需要上传的文件
+          files_to_upload = ["clash.yaml", "clash_tag.yaml"]
+          payload_files = {}
 
-          payload = {
-              "files": {
-                  "clash.yaml": {
-                      "content": data
-                  }
-              }
-          }
+          for filename in files_to_upload:
+              p = pathlib.Path(f"out/{filename}")
+              if p.exists():
+                  content = p.read_text(encoding="utf-8", errors="ignore")
+                  payload_files[filename] = {"content": content}
+              else:
+                  print(f"Warning: {filename} not found, skipping.")
+
+          if not payload_files:
+              print("No files to upload.")
+              sys.exit(1)
+
+          payload = {"files": payload_files}
 
           req = urllib.request.Request(
               f"https://api.github.com/gists/{os.environ['GIST_ID']}",
@@ -140,7 +155,7 @@ jobs:
               print("Failed to update gist:", e)
               sys.exit(1)
 
-          print("Gist updated successfully.")
+          print("Gist updated successfully with all files.")
           PY
 
       - name: Cleanup
