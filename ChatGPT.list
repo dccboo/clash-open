@@ -17,6 +17,10 @@ DOMAIN-KEYWORD,dify
 # > Google AI (Gemini/Bard)
 DOMAIN-KEYWORD,gemini
 DOMAIN-KEYWORD,deepmind
+DOMAIN-KEYWORD,gemini.google.com
+DOMAIN-SUFFIX,googleapis.com
+DOMAIN-SUFFIX,bard.google.com
+DOMAIN-SUFFIX,googleusercontent.com
 
 # > JetBrains AI
 DOMAIN-KEYWORD,grazie
