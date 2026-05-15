@@ -3,7 +3,7 @@ host-keyword,chatgpt,ChatGPT
 host-keyword,notebooklm,ChatGPT
 host-keyword,gemini,ChatGPT
 host-keyword,deepmind,ChatGPT
-host-keyword,gemini.google.com,ChatGPT
+host-SUFFIX,gemini.google.com,ChatGPT
 host-SUFFIX,googleapis.com,ChatGPT
 host-SUFFIX,bard.google.com,ChatGPT
 host-SUFFIX,googleusercontent.com,ChatGPT
