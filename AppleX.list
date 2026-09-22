@@ -23,7 +23,7 @@ HOST-SUFFIX,smoot.apple.com,美国
 
 # Apple Intelligence / Private Cloud Compute
 HOST,apple-relay.apple.com,美国
-HOST,apple-relay.cloudflare.com,美国
+HOST,apple-relay.cloudflare.com,Apple
 HOST,apple-relay.fastly-edge.com,美国
 HOST,cp4.cloudflare.com,美国
 
