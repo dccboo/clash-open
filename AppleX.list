@@ -1,3 +1,4 @@
+# dc20260922 增加siri走代理规则
 # dc20260301 delete testflight
 # HOST: 272
 # NAME: Apple
@@ -11,6 +12,33 @@
 # IP6-CIDR: 3
 # USER-AGENT: 23
 # TOTAL: 1880
+
+# New siri 20260922
+HOST,gateway.icloud.com,PROXY
+HOST,seed.siri.apple.com,PROXY
+HOST,probe.icloud.com,PROXY
+HOST,metrics.icloud.com,PROXY
+HOST,guzzoni.apple.com,PROXY
+HOST-SUFFIX,smoot.apple.com,PROXY
+
+# Apple Intelligence / Private Cloud Compute
+HOST,apple-relay.apple.com,PROXY
+HOST,apple-relay.cloudflare.com,PROXY
+HOST,apple-relay.fastly-edge.com,PROXY
+HOST,cp4.cloudflare.com,PROXY
+
+# Apple Intelligence relay / bootstrap
+HOST,apple-relay.mask.apple-dns.net,PROXY
+HOST,mask-api.icloud.com,PROXY
+HOST,mask-api.fe2.apple-dns.net,PROXY
+HOST,apple-relay.akamaized.net,PROXY
+HOST,apple-carry-relay.cloudflare.com,PROXY
+
+# Apple region determination
+HOST,gspe1-ssl.ls.apple.com,PROXY
+HOST,api-siri-prod.apple.com,PROXY
+
+# Apple
 HOST,apps.apple.com,Apple
 HOST,a1.mzstatic.com,Apple
 HOST,a2.mzstatic.com,Apple
